@@ -4,47 +4,66 @@ select name from instructor;
 -- 3.15 the select clause [2/3]
 select distinct dept_name from instructor;
 select all dept_name from instructor;
+-- default is 'all'.
 
 -- 3.16 the select clause [3/3]
-select * from instructor;
+select * from instructor; -- missing
 select ID, name, salary/12 from instructor;
 
 -- 3.17 the where clause
-select name from instructor where dept_name = ‘Comp. Sci.’ and salary > 80000
+select name
+from instructor
+where dept_name = ‘Comp. Sci.’ and salary > 80000;
 
 -- 3.18 the from clause
-select * from instructor, teaches
+select * from instructor, teaches; -- missing
 
 -- 3.20 joins [1/2]
 select name, course_id
 from instructor, teaches
-where instructor.ID = teaches.ID
+where instructor.ID = teaches.ID;
 
 -- 3.21 joins [2/2]
 select section.course_id, semester, year, title
 from section, course
-where section.course_id = course_id and dept_name = ‘Comp. Sci.’
+where section.course_id = course_id and dept_name = ‘Comp. Sci.’;
 
 -- 3.24 natural join
-select * from instructor natural join teaches;
+select * from instructor natural join teaches; -- missing
 
 -- 3.25 natural join example
-select name, course_id from instructor, teaches where instructor.ID = teaches.ID;
-select name, course_id from instructor natural join teaches;
+select name, course_id
+from instructor, teaches
+where instructor.ID = teaches.ID;
+-- identical
+select name, course_id
+from instructor natural join teaches;
 
 -- 3.26 the rename operation
 select ID, name, salary/12 as monthly_salary from instructor;
-select distinct T.name from instructor as T, instructor as S where T.salary > S.salary and S.dept_name = ‘Comp. Sci.’
+--
+select distinct T.name
+from instructor as T, instructor as S
+where T.salary > S.salary and S.dept_name = ‘Comp. Sci.’;
+-- keyword 'as' is optional.
 
 -- 3.27 string operations
-select name from instructor where name like ‘%dar%’
+select name
+from instructor
+where name like ‘%dar%’;
 
 -- 3.29 ordering the display of tuples
-select distinct name from instructor order by name
+select distinct name
+from instructor order by name;
 
 -- 3.30 where clause predicates
-select name from instructor where salary between 90000 and 100000
-select name, course_id from instructor, teaches where (instructor.ID, dept_name) = (teaches.ID, ‘Biology’);
+select name
+from instructor
+where salary between 90000 and 100000;
+-- tuple comparison
+select name, course_id
+from instructor, teaches
+where (instructor.ID, dept_name) = (teaches.ID, ‘Biology’);
 
 -- 3.40 set operations
 (select course_id from section where sem = ‘Fall’ and year = 2009) _
