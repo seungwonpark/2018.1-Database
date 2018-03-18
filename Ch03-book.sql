@@ -4,6 +4,7 @@ select dept_name from instructor;
 select distinct dept_name from instructor;
 select all dept_name from instructor;
 select ID, name, dept_name, salary*1.1 from instructor;
+--
 select name
 from instructor
 where dept_name = 'Comp. Sci.' and salary > 70000;
@@ -33,7 +34,7 @@ from instructor natural join teaches;
 select name, title
 from instructor natural join teaches, course
 where teaches.course_id = course.course_id;
---
+-- identical
 select name, title
 from instructor natural join teaches natural join course;
 --
@@ -132,7 +133,7 @@ where semester = 'Spring' and year = 2010);
 (select course_id
 from section
 where semester = 'Fall' and year = 2009)
-intersect
+intersect all
 (select course_id
 from section
 where semester = 'Spring' and year = 2010);
@@ -220,16 +221,16 @@ where semester = 'Spring' and year = 2010)
 select distinct course_id
 from section
 where semester = 'Fall' and year = 2009 and
-course_id in (select course_id
-from section
-where semester = 'Spring' and year = 2010);
+	course_id in (select course_id
+				from section
+				where semester = 'Spring' and year = 2010);
 -- not in
 select distinct course_id
 from section
 where semester = 'Fall' and year = 2009 and
-course_id not in (select course_id
-from section
-where semester = 'Spring' and year = 2010);
+	course_id not in (select course_id
+					from section
+					where semester = 'Spring' and year = 2010);
 --
 select distinct name
 from instructor
@@ -237,9 +238,10 @@ where name not in ('Mozart', 'Einstein');
 --
 select count(distinct ID)
 from takes
-where (course_id, sec_id, semester, year) in (select course_id, sec_id, semester, year
-from teaches
-where teaches.ID = 10101);
+where (course_id, sec_id, semester, year)
+	in (select course_id, sec_id, semester, year
+		from teaches
+		where teaches.ID = 10101);
 
 -- 3.8.2 set comparison (p.91)
 select distinct T.name
@@ -251,6 +253,10 @@ from instructor
 where salary > some (select salary
 					from instructor
 					where dept_name = 'Biology');
+-- subquery
+(select salary
+from instructor
+where dept_name = 'Biology');
 -- using '> all'
 select name
 from instructor
@@ -284,7 +290,16 @@ where not exists ((select course_id
 				(select T.course_id
 				from takes as T
 				where S.ID = T.ID));
-
+-- subquery
+(select course_id
+from course
+where dept_name = 'Biology')
+-- subquery // not executable by alone
+/*
+(select T.course_id
+from takes as T
+where S.ID = T.ID)
+*/
 -- 3.8.4 test for the absence of duplicate tuples (p.94)
 -- find all courses that were offered at most once in 2009
 select T.course_id
@@ -296,7 +311,7 @@ where unique (select R.course_id
 --
 select T.course_id
 from course as T
-where 1 <= (select count(R.course_id)
+where 1 >= (select count(R.course_id) -- errata reported in http://db-book.com/
 			from section as R
 			where T.course_id = R.course_id and
 			R.year = 2009);
@@ -306,7 +321,7 @@ from course as T
 where not unique (select R.course_id
 				from section as R
 				where T.course_id = R.course_id and
-				R.year = 2009);
+					R.year = 2009);
 
 -- 3.8.5 subqueries in the from clause (p.95)
 select dept_name, avg_salary
@@ -400,7 +415,7 @@ insert into student
 insert into student
 	values ('3003', 'Green', 'Finance', null);
 --
-select student
+select ID  -- errata reported in http://db-book.com/
 from student
 where tot_cred > 45;
 
@@ -437,3 +452,8 @@ set tot_cred = (
 	where S.ID = takes.ID and
 		takes.grade <> 'F' and
 		takes.grade is not null);
+--
+select case
+	when sum(credits) is not null then sum(credits)
+	else 0
+	end
