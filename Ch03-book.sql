@@ -20,8 +20,7 @@ where instructor.ID = teaches.ID;
 --
 select name, course_id
 from instructor, teaches
-where instructor.ID = teaches.ID and _
-instructor.dept_name = 'Comp.Sci.';
+where instructor.ID = teaches.ID and instructor.dept_name = 'Comp.Sci.';
 
 -- 3.3.3 the natural join (71p.)
 select name, course_id
@@ -34,10 +33,10 @@ from instructor natural join teaches;
 select name, title
 from instructor natural join teaches, course
 where teaches.course_id = course.course_id;
--- identical
+-- not always identical!
 select name, title
-from instructor natural join teaches natural join course;
---
+from instructor natural join teaches natural join course; -- this requires teaches.dept_name = course.dept_name, too.
+-- this is now identical to the above.
 select name, title
 from (instructor natural join teaches) join course using (course_id);
 
