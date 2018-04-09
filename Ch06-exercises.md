@@ -79,6 +79,32 @@ Answer: http://codex.cs.yale.edu/avi/db-book/db6/practice-exer-dir/6s.pdf
 
   - (Projection is not included in intended answer)
 
-  ​
+- f. Find the maximum enrollment, across all sections, in Autumn 2009.
+
+  - $ t1 \leftarrow  \Pi_{course\_id, enrollment}(_{course\_id, sec\_id}\mathcal{G}_{\text{count(*)}~\text{as}~enrollment}(\sigma_{year=2009 \and semester='Fall'}(takes)))  $
+  - $ result = \mathcal{G}_{\text{max}(enrollment)}(t1) $
+
+- g. Find the sections that had the maximum enrollment in Autumn 2009.
+
+  - $ t2 \leftarrow \mathcal{G}_{\text{max}(enrollment)~\text{as}~enrollment}(t1) $
+  - $ result = \sigma_{enrollment = t2}(t1) $
+  - $ result = t1 \bowtie t2 $
 
 
+6.2 Consider the relational database of Figure 6.22, where the primary keys are underlined. Give an expression in the relational algebra to express each of the following queries:
+
+```
+employee (*person_name*, street, city)
+works (*person_name*, company_name, salary)
+company (*company_name*, city)
+manages (*person_name*, manager_name)
+```
+
+
+
+- a. Find the names of all employees who live in the same city and on the same street as do their managers.
+  - ​
+
+
+- b. Find the names of all employees in this database who do not work for "First Bank Corporation".
+- c. Find the names of all employees who earn more than every employee of "Small Bank Corporation".
