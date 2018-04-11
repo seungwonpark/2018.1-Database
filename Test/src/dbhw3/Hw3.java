@@ -6,8 +6,8 @@ import java.util.*;
 public class Hw3 {
 	public static void main(String args[]) {
 		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String user = "veydpz"; // your DB user name
-		String password = "root"; // your DB user password
+		String user = "system"; // your DB user name
+		String password = "qlalfdla22A"; // your DB user password
 	        
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -31,7 +31,7 @@ public class Hw3 {
 			System.out.println("Welcome");
 			
 			while (true) { // TODO: when should we terminate?
-				/* LOGIN */
+				/* login */
 				while (isLogin == 0) {
 					System.out.println("\nPlease sign in");
 					System.out.print("ID      : ");
@@ -68,6 +68,7 @@ public class Hw3 {
 						try {
 							menu = Integer.parseInt(in.nextLine());
 						} catch (NumberFormatException e) {}
+						
 						
 						if (menu == 1) {
 							/******************/
@@ -154,8 +155,10 @@ public class Hw3 {
 							/* end student report */
 							/**********************/
 						} else if (menu == 2) {
-							/* view time table */
-							System.out.println("view time table");
+							/******************/
+							/* time table */
+							
+							
 						} else if (menu == 0) {
 							isLogin = 0;
 							break;
@@ -178,8 +181,25 @@ public class Hw3 {
 							/* course report */
 							System.out.println("Course report");
 						} else if (menu == 2) {
+							/******************/
 							/* Advisee report */
-							System.out.println("Advisee report");
+							
+							PreparedStatement getAdvisee = conn.prepareStatement("select ID, name, dept_name, tot_cred from"
+									+ " student, advisor"
+									+ " where student.ID = advisor.s_ID and ? = advisor.i_ID");
+							getAdvisee.setString(1, id);
+							ResultSet rs = getAdvisee.executeQuery();
+							
+							System.out.println("ID\tname\tdept_name\ttot_cred");
+							String result = "";
+							while (rs.next()) {
+								String s_id = rs.getString(1);
+								String s_name = rs.getString(2);
+								String s_dept_name = rs.getString(3);
+								int s_tot_cred = rs.getInt(4);
+								result += s_id + "\t" + s_name + "\t" + s_dept_name + "\t" + s_tot_cred + "\n";
+							}
+							System.out.print(result);
 						} else if (menu == 0) {
 							isLogin = 0;
 							break;
@@ -191,6 +211,8 @@ public class Hw3 {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	public static double grade2num(String grade) {
 		// grade -> num
 		// grade2num("A+") = 43
