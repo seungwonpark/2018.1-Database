@@ -33,15 +33,15 @@ public class Hw3 {
 			PreparedStatement recentCourses = conn.prepareStatement("select section.course_id, section.semester, section.building, section.ROOM_NUMBER, section.TIME_SLOT_ID, section.year\n" +
 					"from teaches join section on teaches.course_id = section.COURSE_ID\n" +
 					"where ID = ? and section.year = ? and section.semester = ? and section.sec_id = ?");
-			
+
 			PreparedStatement getTitle = conn.prepareStatement("select title from course where course_id = ?");
 			PreparedStatement getTimeSlot = conn.prepareStatement("select * from time_slot where time_slot_id = ?");
 			PreparedStatement getTakes = conn.prepareStatement("select ID, grade from takes where course_id = ? and semester = ? and year = ?");
 			PreparedStatement getAdvisee = conn.prepareStatement("select ID, name, dept_name, tot_cred from"
 					+ " student, advisor"
 					+ " where student.ID = advisor.s_ID and ? = advisor.i_ID");
-			
-			
+
+
 			String id = "";
 			String name = "";
 
@@ -198,7 +198,7 @@ public class Hw3 {
 								System.out.println(tt.getString(1) + "\t" + tt.getString(2) + "\t" + tt.getString(3) + "\t" + tt.getInt(4) + " : " +tt.getInt(5) + "\t" + tt.getInt(6) + " : " + tt.getInt(7));
 							}
 							stmt.close();
-							
+
 						} else if (menu == 0) {
 							isLogin = 0;
 							break;
@@ -227,14 +227,14 @@ public class Hw3 {
 							String recent_semester = rs.getString(1);
 							String recent_year = rs.getString(2);
 							String recent_sec_id = rs.getString(3);
-							
+
 							recentCourses.setString(1, id);
 							recentCourses.setString(2, recent_year);
 							recentCourses.setString(3, recent_semester);
 							recentCourses.setString(4, recent_sec_id);
 							ResultSet rs1 = recentCourses.executeQuery();
-						 
-							
+
+
 							while(rs1.next()) {
 								String course_id = rs1.getString(1);
 								String semester = rs1.getString(2);
@@ -257,7 +257,7 @@ public class Hw3 {
 								String e_hr = rs3.getString(5);
 								String e_min = rs3.getString(6);
 
-								System.out.print(course_id + " " + title + "\t[" + building + "] ");
+								System.out.print(course_id + " " + title + "\t[" + building + " " + room + "] ");
 
 								System.out.print("(" + day);
 
@@ -275,7 +275,7 @@ public class Hw3 {
 								while (rs4.next()) {
 									String student_id = rs4.getString(1);
 									String grade = rs4.getString(2);
-									
+
 									getStudentInfo.setString(1, student_id);
 									ResultSet rs5 = getStudentInfo.executeQuery();
 									rs5.next();
