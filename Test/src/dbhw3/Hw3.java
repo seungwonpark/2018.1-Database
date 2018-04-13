@@ -232,8 +232,8 @@ public class Hw3 {
 	
 	public static double grade2num(String grade) {
 		// grade -> num
-		// grade2num("A+") = 43
-		// grade2num("A") = 40
+		// grade2num("A+") = 4.3
+		// grade2num("A") = 4.0
 		char alphabet = grade.charAt(0);
 		if(alphabet == 'F') return 0;
 		else {
