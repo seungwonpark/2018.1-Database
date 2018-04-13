@@ -47,7 +47,7 @@ public class Hw3 {
 
 			System.out.println("Welcome");
 
-			while (true) { // TODO: when should we terminate?
+			while (true) {
 				/* login */
 				while (isLogin == 0) {
 					System.out.println("\nPlease sign in");
