@@ -169,10 +169,10 @@ public class Hw3 {
 								int selectedIndex = Integer.parseInt(in.nextLine());
 								ys.absolute(selectedIndex);
 							} catch (NumberFormatException e) {}
-							ResultSet tt = stmt.executeQuery("select course_id, title, day, start_hr, start_min, end_hr, end_min from course C, time_slot T where (C.course_id, T.time_slot_id) in (select course id, time_slot_id from takes natural join section where ID="+ id + ", semester=" + ys.getString(1) + ", year=", + ys.getInt(2)+ ")");
+							ResultSet tt = stmt.executeQuery("select course_id, title, day, start_hr, start_min, end_hr, end_min from course C, time_slot T where (C.course_id, T.time_slot_id) in (select course id, time_slot_id from takes natural join section where ID="+ id + ", semester=" + ys.getString(1) + ", year=" + ys.getInt(2)+ ")");
 							System.out.println("\ncourse_id\ttitle\tday\tstart_time\tend_time");
 							while(tt.next()) {
-								Sysem.out.println(tt.getString(1) + "\t" + tt.getString(2) + "\t" + tt.getString(3) + "\t" + tt.getInt(4) + " : " +tt.getInt(5) + "\t" + tt.getInt(6) + " : " + tt.getInt(7));
+								System.out.println(tt.getString(1) + "\t" + tt.getString(2) + "\t" + tt.getString(3) + "\t" + tt.getInt(4) + " : " +tt.getInt(5) + "\t" + tt.getInt(6) + " : " + tt.getInt(7));
 							}
 							stmt.close();
 							
